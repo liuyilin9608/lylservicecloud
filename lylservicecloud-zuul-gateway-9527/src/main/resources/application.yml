@@ -1,0 +1,29 @@
+server:
+  port: 9527
+spring:
+  application:
+    name: springcloud-study-zuul-gateway
+# 唯一的微服务名字
+eureka:
+  instance:
+    instance-id: gateway-9572
+    prefer-ip-address: true
+  client:
+    service-url:
+      defaultZone: http://eureka7001.com:7001/eureka/,http://eureka7002.com:7002/eureka/,http://eureka7003.com:7003/eureka/
+
+info:
+  app.name: springcloud-study-zuul-gateway
+  company.name: www.lyl.com
+  build.artifactId: $project.artifactId$
+  build.version: $project.version$
+
+# 配置zuul的路由映射规则
+zuul:
+  routes:
+    mydept.serviceId: study-springcloud-dept  # http://myzuul.com:9527/study-springcloud-dept/dept/findById/1
+    mydept.path: /mydept/**                   # http://myzuul.com:9527/mydept/dept/findById/1
+  # 原真实服务名忽略，多个用"*" ignored-services: "*"
+  ignored-services: study-springcloud-dept # 要用小写  忽略原名，将原路径封锁
+  # 加统一前缀，http://myzuul.com:9527/laomao/mydept/dept/get/1
+  prefix: /laomao
